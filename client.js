@@ -14,11 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 class SVClient {
+  static get defaultBaseUrl () {
+    return 'https://api.salesvista.app'
+  }
+
   static get (opts) {
     return new SVClient(opts)
   }
 
   constructor (opts) {
+    this.orgId = null
     this.configure(opts)
   }
 
@@ -57,8 +62,12 @@ class SVClient {
     // see https://www.npmjs.com/package/got#proxies
 
     // dependency injection
-    this._cacheStrategy = opts.cacheStrategy || this._cacheStrategy
     this._got = opts.got || this._got
+    this._cacheStrategy = opts.cacheStrategy || this._cacheStrategy
+
+    // api modules
+    this._reps = opts.reps || this._reps
+    this._sales = opts.sales || this._sales
 
     return this
   }
@@ -95,7 +104,7 @@ class SVClient {
 
   get oauthBaseUrl () {
     if (!this._oauthBaseUrl) {
-      this._oauthBaseUrl = this._restBaseUrl || this.baseUrl || 'https://salesvista.app'
+      this._oauthBaseUrl = this._restBaseUrl || this.baseUrl || SVClient.defaultBaseUrl
     }
     return this._oauthBaseUrl
   }
@@ -107,7 +116,7 @@ class SVClient {
 
   get restBaseUrl () {
     if (!this._restBaseUrl) {
-      this._restBaseUrl = this._oauthRoot || this.baseUrl || 'https://salesvista.app'
+      this._restBaseUrl = this._oauthBaseUrl || this.baseUrl || SVClient.defaultBaseUrl
     }
     return this._restBaseUrl
   }
@@ -165,7 +174,7 @@ class SVClient {
     try {
       response = await this.got(url, gotOpts)
     } catch (err) {
-      response = err.response
+      if (err.response) response = err.response
       const status = response && response.statusCode
       if (!opts.oauth && status === 401) {
         // fetch new token and retry
@@ -175,7 +184,7 @@ class SVClient {
           try {
             response = await this.got(url, gotOpts)
           } catch (err2) {
-            response = err2.response
+            if (err2.response) response = err2.response
           }
         }
       }
@@ -220,6 +229,23 @@ class SVClient {
     }
 
     return token
+  }
+
+  async getOrgId () {
+    if (this.orgId) return this.orgId
+    const token = await this.getToken(true)
+    if (token && token.org_id) this.orgId = token.org_id
+    return this.orgId
+  }
+
+  get reps () {
+    if (!this._reps) this._reps = require('./api/reps').get({ client: this })
+    return this._reps
+  }
+
+  get sales () {
+    if (!this._sales) this._sales = require('./api/sales').get({ client: this })
+    return this._sales
   }
 }
 

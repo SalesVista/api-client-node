@@ -4,6 +4,7 @@
   "description": "Node.js SDK for the SalesVista REST API",
   "main": "index.js",
   "files": [
+    "api/*.js",
     "cache-strategy.js",
     "client.js",
     "index.js"
