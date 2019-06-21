@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+const { SVError } = require('./errors')
+
 class SVClient {
   static get defaultBaseUrl () {
     return 'https://api.salesvista.app'
@@ -70,6 +72,17 @@ class SVClient {
     this._sales = opts.sales || this._sales
 
     return this
+  }
+
+  get crypto () {
+    if (!this._crypto) {
+      try {
+        this._crypto = require('crypto')
+      } catch (err) {
+        throw new SVError('You are using a version of Node.js that doesn\'t support the `crypto` module. Signatures cannot be verified without it.').withCause(err)
+      }
+    }
+    return this._crypto
   }
 
   get got () {
@@ -247,6 +260,78 @@ class SVClient {
     if (!this._sales) this._sales = require('./api/sales').get({ client: this })
     return this._sales
   }
+
+  // this method will throw an error for any of the following 4 scenarios:
+  // 1. no secrets configured
+  // 2. version of node doesn't support crypto module
+  // 3. payload cannot be stringified
+  // 4. system does not support the hash algorithm used in the signature
+  // otherwise this method returns a boolean
+  isValidSignature (signature, payload) {
+    // fail-fast if no secrets configured
+    if (!this.orgSecret && !this.secret) {
+      throw new SVError('You must configure this client with a `secret` and `orgSecret` before signatures can be validated.')
+    }
+
+    // do this to fail-fast on "no crypto module"
+    const c = this.crypto
+
+    // fail-fast if payload cannot be stringified (e.g. if whole request given)
+    let stringifiedPayload
+    try {
+      stringifiedPayload = JSON.stringify(payload)
+    } catch (err) {
+      throw new SVError('The given payload could not be stringified - did you pass the request object instead of the request body?').withCause(err)
+    }
+
+    const algo = extractAlgo(signature)
+    if (!algo) return false
+
+    // trySignature with this.orgSecret first (if we have it), then with this.secret
+    let isValid = false
+    if (this.orgSecret) {
+      isValid = trySignature(c, algo, signature, stringifiedPayload, this.orgSecret)
+    }
+    if (!isValid && this.secret) {
+      isValid = trySignature(c, algo, signature, stringifiedPayload, this.secret)
+    }
+
+    return isValid
+  }
+}
+
+// signature should be a string in the form '<algorithm>=<hex_encoded_hash>'
+// examples:
+// 'sha1=c9bd3c44a91cfe176f71afcc1e08240555f0ce8b'
+// 'sha256=2677ad3e7c090b2fa2c0fb13020d66d5420879b8316eb356a2d60fb9073bc778'
+// 'sha512=e571f6f0e16aee15000c83130954f01ac6db0c14eb2202083ad10c3075b9bab729ab09e8e183e4c5955b3617ed00c5dca9510f50d572abf1e279d5fd2321c2a2'
+function extractAlgo (signature) {
+  const s = String(signature)
+  const i = s.indexOf('=')
+  return i === -1 ? null : s.slice(0, i)
+}
+
+function trySignature (crypto, algo, signature, stringifiedPayload, secret) {
+  let hmac
+  try {
+    hmac = crypto.createHmac(algo, secret)
+  } catch (err) {
+    throw new SVError(`Your system does not support the "${algo}" algorithm.`).withCause(err)
+  }
+  const expectedSignature = algo + '=' + hmac.update(stringifiedPayload).digest('hex')
+  const expectedBuffer = buffer(expectedSignature)
+  return crypto.timingSafeEqual(expectedBuffer, buffer(signature, expectedBuffer.length))
+}
+
+function buffer (content, length) {
+  let b
+  if (length) {
+    b = Buffer.alloc(length)
+    b.write(content, 0, 'utf8')
+  } else {
+    b = Buffer.from(content)
+  }
+  return b
 }
 
 function stripTrailingSlash (s) {
