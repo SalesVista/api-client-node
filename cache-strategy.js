@@ -17,13 +17,12 @@ limitations under the License.
 // this class is meant to be extended by the consumer
 // so a custom instance can be plugged into SVClient
 class CacheStrategy {
-  static get (/* opts */) {
-    return new CacheStrategy(/* opts */)
+  static get (opts) {
+    return new CacheStrategy(opts)
   }
 
-  constructor (/* opts */) {
-    // opts = opts || {}
-    // this.tokenKeyPrefix = opts.tokenKeyPrefix || 'sv_client_token'
+  constructor (opts) {
+    opts = opts || {}
     this._token = null
   }
 
