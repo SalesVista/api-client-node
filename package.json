@@ -7,6 +7,7 @@
     "api/*.js",
     "cache-strategy.js",
     "client.js",
+    "errors.js",
     "index.js"
   ],
   "scripts": {
