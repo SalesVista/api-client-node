@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/SalesVista/api-client-node/compare/v0.1.0...v0.1.1) (2019-07-08)
+
+
+### Bug Fixes
+
+* published package missing errors module ([#1](https://github.com/SalesVista/api-client-node/issues/1)) ([f9931a5](https://github.com/SalesVista/api-client-node/commit/f9931a5))
+
+
+
 ## 0.1.0 (2019-07-08)
 
 
