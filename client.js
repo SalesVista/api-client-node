@@ -70,6 +70,7 @@ class SVClient {
     // api modules
     this._reps = opts.reps || this._reps
     this._sales = opts.sales || this._sales
+    this._productCategories = opts._productCategories || this._productCategories
 
     return this
   }
@@ -259,6 +260,11 @@ class SVClient {
   get sales () {
     if (!this._sales) this._sales = require('./api/sales').get({ client: this })
     return this._sales
+  }
+
+  get productCategories () {
+    if (!this._productCategories) this._productCategories = require('./api/product-categories').get({ client: this })
+    return this._productCategories
   }
 
   // this method will throw an error for any of the following 4 scenarios:
