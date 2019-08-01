@@ -15,23 +15,22 @@ limitations under the License.
 */
 const Api = require('./api')
 
-class RepsApi extends Api {
+class ProductCategoriesApi extends Api {
   static get (opts) {
-    return new RepsApi(opts)
+    return new ProductCategoriesApi(opts)
   }
 
-  async getSearchableReps (opts = {}) {
+  async getProductCategories (opts = {}) {
     const {
       page = 1,
       size = 50
     } = opts
 
     const orgId = opts.orgId || await this.client.getOrgId()
-    let route = `/orgs/${orgId}/searchable-reps?page=${page}&size=${size}`
-    // TODO all other query params
+    let route = `/orgs/${orgId}/product-categories?page=${page}&size=${size}`
     const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
     return r && r.body
   }
 }
 
-module.exports = RepsApi
+module.exports = ProductCategoriesApi
