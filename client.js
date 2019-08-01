@@ -70,7 +70,7 @@ class SVClient {
     // api modules
     this._reps = opts.reps || this._reps
     this._sales = opts.sales || this._sales
-    this._productCategories = opts._productCategories || this._productCategories
+    this._productCategories = opts.productCategories || this._productCategories
 
     return this
   }
