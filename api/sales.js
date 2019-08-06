@@ -57,11 +57,13 @@ class SalesApi extends Api {
 
   async updateBatch (batchId, version, opts) {
     const {
+      name,
       sales // verify it is an array?
     } = opts
 
     const request = {
-      version
+      version,
+      name
     }
 
     if (sales) request.sales = sales
