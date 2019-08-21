@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/SalesVista/api-client-node/compare/v0.2.1...v0.2.2) (2019-08-21)
+
+
+### Features
+
+* add org api with `getOrg(opts)` method ([#5](https://github.com/SalesVista/api-client-node/issues/5)) ([7fca364](https://github.com/SalesVista/api-client-node/commit/7fca364))
+
 ### [0.2.1](https://github.com/SalesVista/api-client-node/compare/v0.2.0...v0.2.1) (2019-08-06)
 
 
