@@ -36,7 +36,8 @@ class SalesApi extends Api {
   }
 
   async createBatch (opts) {
-    const { name,
+    const {
+      name,
       externalOrg,
       sales // verify it is an array?
     } = opts
@@ -50,7 +51,7 @@ class SalesApi extends Api {
 
     if (sales) request.sales = sales
 
-    let route = `/orgs/${orgId}/sale-external-batches`
+    const route = `/orgs/${orgId}/sale-external-batches`
     const r = await this.client.post(route, request, opts) // TODO wrap this.client.post that throws on 4xx/5xx response
     return r && r.body
   }
@@ -68,7 +69,7 @@ class SalesApi extends Api {
 
     if (sales) request.sales = sales
 
-    let route = `/sale-batches/${batchId}`
+    const route = `/sale-batches/${batchId}`
     const r = await this.client.put(route, request, opts) // TODO wrap this.client.put that throws on 4xx/5xx response
     return r && r.body
   }

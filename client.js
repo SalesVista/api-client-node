@@ -68,9 +68,10 @@ class SVClient {
     this._cacheStrategy = opts.cacheStrategy || this._cacheStrategy
 
     // api modules
+    this._org = opts.org || this._org
+    this._productCategories = opts.productCategories || this._productCategories
     this._reps = opts.reps || this._reps
     this._sales = opts.sales || this._sales
-    this._productCategories = opts.productCategories || this._productCategories
 
     return this
   }
@@ -252,6 +253,16 @@ class SVClient {
     return this.orgId
   }
 
+  get org () {
+    if (!this._org) this._org = require('./api/org').get({ client: this })
+    return this._org
+  }
+
+  get productCategories () {
+    if (!this._productCategories) this._productCategories = require('./api/product-categories').get({ client: this })
+    return this._productCategories
+  }
+
   get reps () {
     if (!this._reps) this._reps = require('./api/reps').get({ client: this })
     return this._reps
@@ -260,11 +271,6 @@ class SVClient {
   get sales () {
     if (!this._sales) this._sales = require('./api/sales').get({ client: this })
     return this._sales
-  }
-
-  get productCategories () {
-    if (!this._productCategories) this._productCategories = require('./api/product-categories').get({ client: this })
-    return this._productCategories
   }
 
   // this method will throw an error for any of the following 4 scenarios:

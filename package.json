@@ -38,10 +38,10 @@
     "got": "^9.6.0"
   },
   "devDependencies": {
-    "ava": "^2.1.0",
+    "ava": "^2.3.0",
     "c8": "^5.0.1",
-    "coveralls": "^3.0.4",
-    "standard": "^12.0.1",
-    "standard-version": "^6.0.1"
+    "coveralls": "^3.0.6",
+    "standard": "^14.0.0",
+    "standard-version": "^7.0.0"
   }
 }
