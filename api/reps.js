@@ -27,7 +27,7 @@ class RepsApi extends Api {
     } = opts
 
     const orgId = opts.orgId || await this.client.getOrgId()
-    let route = `/orgs/${orgId}/searchable-reps?page=${page}&size=${size}`
+    const route = `/orgs/${orgId}/searchable-reps?page=${page}&size=${size}`
     // TODO all other query params
     const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
     return r && r.body

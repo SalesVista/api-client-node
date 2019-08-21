@@ -27,7 +27,7 @@ class ProductCategoriesApi extends Api {
     } = opts
 
     const orgId = opts.orgId || await this.client.getOrgId()
-    let route = `/orgs/${orgId}/product-categories?page=${page}&size=${size}`
+    const route = `/orgs/${orgId}/product-categories?page=${page}&size=${size}`
     const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
     return r && r.body
   }
