@@ -70,6 +70,7 @@ class SVClient {
     // api modules
     this._org = opts.org || this._org
     this._productCategories = opts.productCategories || this._productCategories
+    this._products = opts.products || this._products
     this._reps = opts.reps || this._reps
     this._sales = opts.sales || this._sales
 
@@ -261,6 +262,11 @@ class SVClient {
   get productCategories () {
     if (!this._productCategories) this._productCategories = require('./api/product-categories').get({ client: this })
     return this._productCategories
+  }
+
+  get products () {
+    if (!this._products) this._products = require('./api/products').get({ client: this })
+    return this._products
   }
 
   get reps () {
