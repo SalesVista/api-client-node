@@ -22,7 +22,7 @@ class OrgApi extends Api {
 
   async getOrg (opts) {
     opts = opts || {}
-    const orgId = opts.id || await this.client.getOrgId()
+    const orgId = opts.id || opts.orgId || await this.client.getOrgId()
     let route = `/orgs/${orgId}`
 
     // params: withCounts (boolean), from (date), to (date), fiscalYearId (string), fiscalPeriodId (string)
@@ -34,6 +34,18 @@ class OrgApi extends Api {
     }
 
     const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  async putExternalOrgKey (system, key, opts) {
+    opts = opts || {}
+    const orgId = opts.id || opts.orgId || await this.client.getOrgId()
+    const route = `/orgs/${orgId}/external-orgs/${system}/${key}`
+
+    const body = {}
+    if (opts.name || opts.companyName) body.name = opts.name || opts.companyName
+
+    const r = await this.client.put(route, body, opts)
     return r && r.body
   }
 }
