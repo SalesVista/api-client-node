@@ -23,11 +23,12 @@ class LabelsApi extends Api {
   async getLabels (opts = {}) {
     const {
       page = 1,
-      size = 50
+      size = 50,
+      type = 'sale'
     } = opts
 
     const orgId = opts.orgId || await this.client.getOrgId()
-    const route = `/orgs/${orgId}/labels?page=${page}&size=${size}`
+    const route = `/orgs/${orgId}/labels?page=${page}&size=${size}&type=${type}`
     // TODO all other query params
     const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
     return r && r.body
