@@ -1,7 +1,6 @@
 name: CI
 on:
   - push
-  - pull
 jobs:
   test:
     name: Node.js ${{ matrix.node-version }}
