@@ -2,7 +2,7 @@
 
 > Node.js SDK for the SalesVista REST API
 
-[![Build Status](https://travis-ci.com/SalesVista/api-client-node.svg?branch=master)](https://travis-ci.com/SalesVista/api-client-node)
+[![CI Status](https://github.com/SalesVista/api-client-node/workflows/CI/badge.svg?branch=master)](https://github.com/SalesVista/api-client-node/actions)
 [![Coverage Status](https://coveralls.io/repos/github/SalesVista/api-client-node/badge.svg?branch=master)](https://coveralls.io/github/SalesVista/api-client-node?branch=master)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
