@@ -162,7 +162,7 @@ class SVClient {
 
     const gotOpts = {
       method: opts.method || 'GET',
-      json: true, // accept: application/json
+      responseType: 'json', // accept: application/json
       headers: {
         'User-Agent': this.userAgent,
         ...this.defaultHeaders,
@@ -171,8 +171,10 @@ class SVClient {
     }
 
     if (data && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(String(gotOpts.method).toUpperCase())) {
-      gotOpts.body = data
-      if (opts.oauth) gotOpts.form = true // content-type: application/x-www-form-urlencoded
+      // form = content-type: application/x-www-form-urlencoded
+      // json = content-type: application/json
+      const bodyPropName = opts.oauth ? 'form' : 'json'
+      gotOpts[bodyPropName] = data
     }
 
     if (opts.oauth) {
