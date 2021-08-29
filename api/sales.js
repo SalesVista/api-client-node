@@ -35,6 +35,14 @@ class SalesApi extends Api {
     return r && r.body
   }
 
+  async listSaleBatches (opts) {
+    opts = opts || {}
+    const orgId = opts.orgId || await this.getOrgId()
+    const url = `/orgs/${orgId}/sale-batches` + this.qs(opts, 'page', 'size', 'deleted', 'name')
+    const r = await this.get(url)
+    return r && r.body
+  }
+
   async createBatch (opts) {
     const {
       name,

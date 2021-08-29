@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+const querystring = require('querystring')
+
 class Api {
   constructor (opts) {
     opts = opts || {}
@@ -22,6 +24,20 @@ class Api {
   get client () {
     if (!this._client) this._client = require('../client').get()
     return this._client
+  }
+
+  pick (src, ...props) {
+    if (!src) return {}
+    return [].concat(props).flat().filter(Boolean).reduce((dest, prop) => {
+      if (typeof src[prop] !== 'undefined') dest[prop] = src[prop]
+      return dest
+    }, {})
+  }
+
+  qs (obj, ...props) {
+    if (props.length) obj = this.pick(obj, ...props)
+    const query = querystring.stringify(obj)
+    return query ? '?' + query : ''
   }
 }
 

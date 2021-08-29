@@ -33,6 +33,14 @@ class LabelsApi extends Api {
     const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
     return r && r.body
   }
+
+  async createLabel (label, opts) {
+    opts = opts || {}
+    const orgId = opts.orgId || await this.getOrgId()
+    const request = this.pick(label, 'type', 'name', 'description', 'color', 'icon')
+    const r = await this.post(`/orgs/${orgId}/labels`, request, opts)
+    return r && r.body
+  }
 }
 
 module.exports = LabelsApi
