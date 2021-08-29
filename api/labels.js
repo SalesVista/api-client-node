@@ -38,7 +38,7 @@ class LabelsApi extends Api {
     opts = opts || {}
     const orgId = opts.orgId || await this.getOrgId()
     const request = this.pick(label, 'type', 'name', 'description', 'color', 'icon')
-    const r = await this.post(`/orgs/${orgId}/labels`, request, opts)
+    const r = await this.client.post(`/orgs/${orgId}/labels`, request, opts)
     return r && r.body
   }
 }

@@ -39,7 +39,7 @@ class SalesApi extends Api {
     opts = opts || {}
     const orgId = opts.orgId || await this.getOrgId()
     const url = `/orgs/${orgId}/sale-batches` + this.qs(opts, 'page', 'size', 'deleted', 'name')
-    const r = await this.get(url)
+    const r = await this.client.get(url)
     return r && r.body
   }
 
