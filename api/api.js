@@ -28,8 +28,17 @@ class Api {
 
   pick (src, ...props) {
     if (!src) return {}
+    let p, d
     return [].concat(props).flat().filter(Boolean).reduce((dest, prop) => {
-      if (typeof src[prop] !== 'undefined') dest[prop] = src[prop]
+      if (typeof prop === 'string') {
+        p = prop
+        d = undefined
+      } else {
+        p = Object.keys(prop)[0]
+        d = prop[p]
+      }
+      if (typeof src[p] !== 'undefined') dest[p] = src[p]
+      else if (typeof d !== 'undefined') dest[p] = d
       return dest
     }, {})
   }

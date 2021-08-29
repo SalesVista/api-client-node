@@ -21,15 +21,17 @@ class ProductsApi extends Api {
   }
 
   async getProducts (opts = {}) {
-    const {
-      page = 1,
-      size = 50
-    } = opts
-
-    // TODO params: name (1+ strings), inAnyPcat (boolean)
-
     const orgId = opts.orgId || await this.client.getOrgId()
-    const route = `/orgs/${orgId}/products?page=${page}&size=${size}`
+    const route = `/orgs/${orgId}/products` + this.qs(
+      opts,
+      { page: 1 },
+      { size: 50 },
+      'sort',
+      'id',
+      'name',
+      'inAnyPcat', // boolean
+      'withExternalKeys' // boolean
+    )
     const r = await this.client.get(route, opts)
     return r && r.body
   }
