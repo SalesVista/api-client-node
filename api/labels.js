@@ -21,16 +21,26 @@ class LabelsApi extends Api {
   }
 
   async getLabels (opts = {}) {
-    const {
-      page = 1,
-      size = 50,
-      type = 'sale'
-    } = opts
-
     const orgId = opts.orgId || await this.client.getOrgId()
-    const route = `/orgs/${orgId}/labels?page=${page}&size=${size}&type=${type}`
-    // TODO all other query params
-    const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
+    const route = `/orgs/${orgId}/labels` + this.qs(
+      opts,
+      { page: 1 },
+      { size: 50 },
+      'sort',
+      { type: 'sale' }, // string or array
+      'reportId', // string
+      'includeDeleted', // boolean
+      'name' // string or array
+    )
+    const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  async createLabel (label, opts) {
+    opts = opts || {}
+    const orgId = opts.orgId || await this.client.getOrgId()
+    const request = this.pick(label, 'type', 'name', 'description', 'color', 'icon')
+    const r = await this.client.post(`/orgs/${orgId}/labels`, request, opts)
     return r && r.body
   }
 }

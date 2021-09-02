@@ -35,6 +35,15 @@ class SalesApi extends Api {
     return r && r.body
   }
 
+  async listSaleBatches (opts) {
+    opts = opts || {}
+    const orgId = opts.orgId || await this.client.getOrgId()
+    const url = `/orgs/${orgId}/sale-batches` + this.qs(opts, 'page', 'size', 'deleted', 'name')
+    const r = await this.client.get(url, opts)
+    return r && r.body
+  }
+
+  // deprecated, use createExternalBatch or createFileBatch instead
   async createBatch (opts) {
     const {
       name,
@@ -53,6 +62,24 @@ class SalesApi extends Api {
 
     const route = `/orgs/${orgId}/sale-external-batches`
     const r = await this.client.post(route, request, opts) // TODO wrap this.client.post that throws on 4xx/5xx response
+    return r && r.body
+  }
+
+  async createExternalBatch (batch, opts) {
+    opts = opts || {}
+    const orgId = opts.orgId || await this.client.getOrgId()
+    // externalOrg required
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'sales', 'externalOrg')
+    const r = await this.client.post(`/orgs/${orgId}/sale-external-batches`, request, opts)
+    return r && r.body
+  }
+
+  async createFileBatch (batch, opts) {
+    opts = opts || {}
+    const orgId = opts.orgId || await this.client.getOrgId()
+    // rawName required
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'sales')
+    const r = await this.client.post(`/orgs/${orgId}/sale-file-batches`, request, opts)
     return r && r.body
   }
 
