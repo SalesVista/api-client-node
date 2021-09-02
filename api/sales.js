@@ -37,7 +37,7 @@ class SalesApi extends Api {
 
   async listSaleBatches (opts) {
     opts = opts || {}
-    const orgId = opts.orgId || await this.getOrgId()
+    const orgId = opts.orgId || await this.client.getOrgId()
     const url = `/orgs/${orgId}/sale-batches` + this.qs(opts, 'page', 'size', 'deleted', 'name')
     const r = await this.client.get(url, opts)
     return r && r.body
