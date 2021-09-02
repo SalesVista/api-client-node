@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/SalesVista/api-client-node/compare/v0.4.1...v0.5.0) (2021-09-02)
+
+
+### Features
+
+* support label creation and listing sale batches ([#13](https://github.com/SalesVista/api-client-node/issues/13)) ([18a4ad8](https://github.com/SalesVista/api-client-node/commit/18a4ad86bab7c67e0e1598e1da52cad50de04ada))
+
 ### [0.4.1](https://github.com/SalesVista/api-client-node/compare/v0.4.0...v0.4.1) (2021-08-19)
 
 ## [0.4.0](https://github.com/SalesVista/api-client-node/compare/v0.3.0...v0.4.0) (2020-07-28)
