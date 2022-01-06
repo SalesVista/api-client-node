@@ -68,6 +68,7 @@ class SVClient {
     this._cacheStrategy = opts.cacheStrategy || this._cacheStrategy
 
     // api modules
+    this._customers = opts.customers || this._customers
     this._labels = opts.labels || this._labels
     this._org = opts.org || this._org
     this._productCategories = opts.productCategories || this._productCategories
@@ -255,6 +256,11 @@ class SVClient {
     const token = await this.getToken(true)
     if (token && token.org_id) this.orgId = token.org_id
     return this.orgId
+  }
+
+  get customers () {
+    if (!this._customers) this._customers = require('./api/customers').get({ client: this })
+    return this._customers
   }
 
   get labels () {
