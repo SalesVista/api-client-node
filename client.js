@@ -90,8 +90,8 @@ class SVClient {
     return this._crypto
   }
 
-  get got () {
-    if (!this._got) this._got = require('got')
+  async got () {
+    if (!this._got) this._got = (await import('got')).default
     return this._got
   }
 
@@ -190,9 +190,10 @@ class SVClient {
 
     const url = opts.oauth ? this.oauthUrl(route) : this.restUrl(route)
 
-    let response
+    let got, response
     try {
-      response = await this.got(url, gotOpts)
+      got = await this.got()
+      response = await got(url, gotOpts)
     } catch (err) {
       if (err.response) response = err.response
       const status = response && response.statusCode
@@ -202,7 +203,7 @@ class SVClient {
         if (token && token.access_token) {
           gotOpts.headers.Authorization = `${token.token_type || 'Bearer'} ${token.access_token}`
           try {
-            response = await this.got(url, gotOpts)
+            response = await got(url, gotOpts)
           } catch (err2) {
             if (err2.response) response = err2.response
           }
