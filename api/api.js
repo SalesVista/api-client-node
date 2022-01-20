@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-const querystring = require('querystring')
 
 class Api {
   constructor (opts) {
@@ -45,7 +44,7 @@ class Api {
 
   qs (obj, ...props) {
     if (props.length) obj = this.pick(obj, ...props)
-    const query = querystring.stringify(obj)
+    const query = new URLSearchParams(obj).toString()
     return query ? '?' + query : ''
   }
 }
