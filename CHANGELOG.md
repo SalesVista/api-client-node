@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/SalesVista/api-client-node/compare/v0.5.0...v0.6.0) (2022-01-20)
+
+
+### Features
+
+* add customers api module with getCustomers method ([#14](https://github.com/SalesVista/api-client-node/issues/14)) ([04eb0f8](https://github.com/SalesVista/api-client-node/commit/04eb0f85bf98682567437244c5d9ca7bf50f338e))
+
 ## [0.5.0](https://github.com/SalesVista/api-client-node/compare/v0.4.1...v0.5.0) (2021-09-02)
 
 
