@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-const { SVError } = require('./errors')
+const { SVError, SVApiError } = require('./errors')
 
 class SVClient {
   static get defaultBaseUrl () {
@@ -205,9 +205,11 @@ class SVClient {
           try {
             response = await got(url, gotOpts)
           } catch (err2) {
-            if (err2.response) response = err2.response
+            throw new SVApiError(url, err2)
           }
         }
+      } else {
+        throw new SVApiError(url, err)
       }
     }
     return response
