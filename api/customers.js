@@ -20,6 +20,9 @@ class CustomersApi extends Api {
     return new CustomersApi(opts)
   }
 
+  /**
+   * @deprecated Use listCustomers instead
+   */
   async getCustomers (opts = {}) {
     const orgId = opts.orgId || await this.client.getOrgId()
     const route = `/orgs/${orgId}/customers` + this.qs(
@@ -33,6 +36,42 @@ class CustomersApi extends Api {
       'withExternalKeys' // boolean
     )
     const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  async listCustomers (params, opts) {
+    params = params || {}
+    opts = opts || {}
+    const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
+    const route = `/orgs/${orgId}/customers` + this.qs(
+      params,
+      { page: 1 },
+      { size: 50 },
+      'sort',
+      'id', // string or array
+      'name', // string or array
+      'inAnyCcat', // boolean
+      'withExternalKeys' // boolean
+    )
+    const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  async createCustomer (customer, opts) {
+    opts = opts || {}
+    const orgId = customer.orgId || opts.orgId || await this.client.getOrgId()
+    // name (Name) and slug (Customer Code) required
+    const request = this.pick(customer, 'name', 'slug', 'customerCategory', 'description', 'externalOrg', 'externalKey')
+    const r = await this.client.post(`/orgs/${orgId}/customers`, request, opts)
+    return r && r.body
+  }
+
+  async createExternalBatch (batch, opts) {
+    opts = opts || {}
+    const orgId = batch.orgId || opts.orgId || await this.client.getOrgId()
+    // externalOrg required
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'customers', 'externalOrg')
+    const r = await this.client.post(`/orgs/${orgId}/customer-external-batches`, request, opts)
     return r && r.body
   }
 }

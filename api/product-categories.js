@@ -20,6 +20,9 @@ class ProductCategoriesApi extends Api {
     return new ProductCategoriesApi(opts)
   }
 
+  /**
+   * @deprecated Use listProductCategories instead
+   */
   async getProductCategories (opts = {}) {
     const {
       page = 1,
@@ -28,7 +31,24 @@ class ProductCategoriesApi extends Api {
 
     const orgId = opts.orgId || await this.client.getOrgId()
     const route = `/orgs/${orgId}/product-categories?page=${page}&size=${size}`
-    const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
+    const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  async listProductCategories (params, opts) {
+    params = params || {}
+    opts = opts || {}
+    const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
+    const route = `/orgs/${orgId}/product-categories` + this.qs(
+      params,
+      { page: 1 },
+      { size: 50 },
+      'sort',
+      'search', // string
+      'searchField', // string or array
+      'withCounts' // boolean
+    )
+    const r = await this.client.get(route, opts)
     return r && r.body
   }
 }

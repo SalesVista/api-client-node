@@ -20,6 +20,9 @@ class SalesApi extends Api {
     return new SalesApi(opts)
   }
 
+  /**
+   * @deprecated Use listSales instead
+   */
   async getSales (opts = {}) {
     const {
       page = 1,
@@ -31,10 +34,51 @@ class SalesApi extends Api {
     let route = `/orgs/${orgId}/sales?page=${page}&size=${size}`
     if (externalKey) route += `&externalKeyLike=${externalKey}`
 
-    const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
+    const r = await this.client.get(route, opts)
     return r && r.body
   }
 
+  async listSales (params, opts) {
+    params = params || {}
+    opts = opts || {}
+    const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
+    const route = `/orgs/${orgId}/sales` + this.qs(
+      params,
+      { page: 1 },
+      { size: 50 },
+      'sort',
+      'teamId', // string or array
+      'includeChildTeams', // boolean
+      'productCategoryId', // string or array
+      'customerCategoryId', // string or array
+      'labelId', // string or array
+      'repId', // string or array
+      'id', // string or array
+      'productId', // string or array
+      'customerId', // string or array
+      'effectiveDate', // string or array
+      'effectiveDateAfter', // string like '2022-02-12'
+      'effectiveDateBefore', // string
+      'transactionDate', // string or array
+      'transactionDateAfter', // string
+      'transactionDateBefore', // string
+      'reportId', // string or array
+      'batchId', // string or array
+      'referenceId', // string
+      'noteLike', // string (multiple values requires multiple params)
+      'source', // string or array
+      'externalKeyLike', // string or array
+      'withWarnings', // boolean
+      'status', // string or array
+      'type' // string or array
+    )
+    const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  /**
+   * @deprecated Use listSaleBatches2 instead
+   */
   async listSaleBatches (opts) {
     opts = opts || {}
     const orgId = opts.orgId || await this.client.getOrgId()
@@ -43,7 +87,18 @@ class SalesApi extends Api {
     return r && r.body
   }
 
-  // deprecated, use createExternalBatch or createFileBatch instead
+  async listSaleBatches2 (params, opts) {
+    params = params || {}
+    opts = opts || {}
+    const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
+    const url = `/orgs/${orgId}/sale-batches` + this.qs(params, 'page', 'size', 'deleted', 'name')
+    const r = await this.client.get(url, opts)
+    return r && r.body
+  }
+
+  /**
+   * @deprecated Use createExternalBatch or createFileBatch instead
+   */
   async createBatch (opts) {
     const {
       name,
@@ -61,7 +116,7 @@ class SalesApi extends Api {
     if (sales) request.sales = sales
 
     const route = `/orgs/${orgId}/sale-external-batches`
-    const r = await this.client.post(route, request, opts) // TODO wrap this.client.post that throws on 4xx/5xx response
+    const r = await this.client.post(route, request, opts)
     return r && r.body
   }
 
@@ -97,7 +152,7 @@ class SalesApi extends Api {
     if (sales) request.sales = sales
 
     const route = `/sale-batches/${batchId}`
-    const r = await this.client.put(route, request, opts) // TODO wrap this.client.put that throws on 4xx/5xx response
+    const r = await this.client.put(route, request, opts)
     return r && r.body
   }
 }
