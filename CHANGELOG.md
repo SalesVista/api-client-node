@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/SalesVista/api-client-node/compare/v0.6.0...v0.7.0) (2022-03-23)
+
+
+### Features
+
+* add modules triggerEvents, customerCategories, and customFields ([#15](https://github.com/SalesVista/api-client-node/issues/15)) ([f7dab34](https://github.com/SalesVista/api-client-node/commit/f7dab34d8c8dd18ea3572c3f7235e0e585a0d0d6))
+
 ## [0.6.0](https://github.com/SalesVista/api-client-node/compare/v0.5.0...v0.6.0) (2022-01-20)
 
 
