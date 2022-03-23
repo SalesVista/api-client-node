@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-const { SVError } = require('./errors')
+const { SVError, SVApiError } = require('./errors')
 
 class SVClient {
   static get defaultBaseUrl () {
@@ -68,13 +68,16 @@ class SVClient {
     this._cacheStrategy = opts.cacheStrategy || this._cacheStrategy
 
     // api modules
+    this._customerCategories = opts.customerCategories || this._customerCategories
     this._customers = opts.customers || this._customers
+    this._customFields = opts.customFields || this._customFields
     this._labels = opts.labels || this._labels
     this._org = opts.org || this._org
     this._productCategories = opts.productCategories || this._productCategories
     this._products = opts.products || this._products
     this._reps = opts.reps || this._reps
     this._sales = opts.sales || this._sales
+    this._triggerEvents = opts.triggerEvents || this._triggerEvents
 
     return this
   }
@@ -205,9 +208,11 @@ class SVClient {
           try {
             response = await got(url, gotOpts)
           } catch (err2) {
-            if (err2.response) response = err2.response
+            throw new SVApiError(url, err2)
           }
         }
+      } else {
+        throw new SVApiError(url, err)
       }
     }
     return response
@@ -259,9 +264,19 @@ class SVClient {
     return this.orgId
   }
 
+  get customerCategories () {
+    if (!this._customerCategories) this._customerCategories = require('./api/customer-categories').get({ client: this })
+    return this._customerCategories
+  }
+
   get customers () {
     if (!this._customers) this._customers = require('./api/customers').get({ client: this })
     return this._customers
+  }
+
+  get customFields () {
+    if (!this._customFields) this._customFields = require('./api/custom-fields').get({ client: this })
+    return this._customFields
   }
 
   get labels () {
@@ -292,6 +307,11 @@ class SVClient {
   get sales () {
     if (!this._sales) this._sales = require('./api/sales').get({ client: this })
     return this._sales
+  }
+
+  get triggerEvents () {
+    if (!this._triggerEvents) this._triggerEvents = require('./api/trigger-events').get({ client: this })
+    return this._triggerEvents
   }
 
   // this method will throw an error for any of the following 4 scenarios:

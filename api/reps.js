@@ -20,6 +20,9 @@ class RepsApi extends Api {
     return new RepsApi(opts)
   }
 
+  /**
+   * @deprecated Use listSearchableReps instead
+   */
   async getSearchableReps (opts = {}) {
     const orgId = opts.orgId || await this.client.getOrgId()
     const route = `/orgs/${orgId}/searchable-reps` + this.qs(
@@ -33,7 +36,26 @@ class RepsApi extends Api {
       'withExternalKeys', // boolean
       'includeTeamAncestry' // boolean
     )
-    const r = await this.client.get(route, opts) // TODO wrap this.client.get that throws on 4xx/5xx response
+    const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  async listSearchableReps (params, opts) {
+    params = params || {}
+    opts = opts || {}
+    const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
+    const route = `/orgs/${orgId}/searchable-reps` + this.qs(
+      params,
+      { page: 1 },
+      { size: 50 },
+      'sort',
+      'search',
+      'searchField',
+      'withPlans', // boolean
+      'withExternalKeys', // boolean
+      'includeTeamAncestry' // boolean
+    )
+    const r = await this.client.get(route, opts)
     return r && r.body
   }
 }

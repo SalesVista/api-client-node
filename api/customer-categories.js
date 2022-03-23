@@ -1,5 +1,5 @@
 /*
-Copyright 2019 SalesVista, LLC
+Copyright 2022 SalesVista, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,47 +15,36 @@ limitations under the License.
 */
 const Api = require('./api')
 
-class ProductsApi extends Api {
+class CustomerCategoriesApi extends Api {
   static get (opts) {
-    return new ProductsApi(opts)
+    return new CustomerCategoriesApi(opts)
   }
 
-  /**
-   * @deprecated Use listProducts instead
-   */
-  async getProducts (opts = {}) {
-    const orgId = opts.orgId || await this.client.getOrgId()
-    const route = `/orgs/${orgId}/products` + this.qs(
-      opts,
-      { page: 1 },
-      { size: 50 },
-      'sort',
-      'id',
-      'name',
-      'inAnyPcat', // boolean
-      'withExternalKeys' // boolean
-    )
-    const r = await this.client.get(route, opts)
-    return r && r.body
-  }
-
-  async listProducts (params, opts) {
+  async listCustomerCategories (params, opts) {
     params = params || {}
     opts = opts || {}
     const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
-    const route = `/orgs/${orgId}/products` + this.qs(
+    const route = `/orgs/${orgId}/customer-categories` + this.qs(
       params,
       { page: 1 },
       { size: 50 },
       'sort',
-      'id',
-      'name',
-      'inAnyPcat', // boolean
-      'withExternalKeys' // boolean
+      'search', // string
+      'searchField', // string or array
+      'withCounts' // boolean
     )
     const r = await this.client.get(route, opts)
     return r && r.body
   }
+
+  async createCustomerCategory (ccat, opts) {
+    opts = opts || {}
+    const orgId = ccat.orgId || opts.orgId || await this.client.getOrgId()
+    // name is required
+    const request = this.pick(ccat, 'name', 'description', 'parent')
+    const r = await this.client.post(`/orgs/${orgId}/customer-categories`, request, opts)
+    return r && r.body
+  }
 }
 
-module.exports = ProductsApi
+module.exports = CustomerCategoriesApi

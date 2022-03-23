@@ -36,6 +36,24 @@ class LabelsApi extends Api {
     return r && r.body
   }
 
+  async listLabels (params, opts) {
+    params = params || {}
+    opts = opts || {}
+    const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
+    const route = `/orgs/${orgId}/labels` + this.qs(
+      params,
+      { page: 1 },
+      { size: 50 },
+      'sort',
+      { type: 'sale' }, // string or array
+      'reportId', // string
+      'includeDeleted', // boolean
+      'name' // string or array
+    )
+    const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
   async createLabel (label, opts) {
     opts = opts || {}
     const orgId = opts.orgId || await this.client.getOrgId()

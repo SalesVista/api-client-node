@@ -25,6 +25,37 @@ class SVError extends Error {
   }
 }
 
+class SVApiError extends SVError {
+  constructor (url, gotErr) {
+    const method = gotErr?.options?.method || 'HTTP'
+    const statusCode = gotErr?.response?.statusCode || 555
+    super(`${statusCode} response from ${method} ${url}`)
+    this.method = method
+    this.url = url
+    this.statusCode = statusCode
+    this.body = gotErr?.response?.body
+    this.headers = gotErr?.response?.headers
+    if (gotErr) this.withCause(gotErr)
+  }
+
+  toObject () {
+    return {
+      method: this.method,
+      url: this.url,
+      statusCode: this.statusCode,
+      headers: this.headers,
+      body: this.body,
+      message: this.message,
+      stack: this.stack
+    }
+  }
+
+  toJSON () {
+    return this.toObject()
+  }
+}
+
 module.exports = {
-  SVError
+  SVError,
+  SVApiError
 }
