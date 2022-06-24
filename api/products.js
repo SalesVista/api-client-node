@@ -56,6 +56,24 @@ class ProductsApi extends Api {
     const r = await this.client.get(route, opts)
     return r && r.body
   }
+
+  async createProduct (product, opts) {
+    opts = opts || {}
+    const orgId = product.orgId || opts.orgId || await this.client.getOrgId()
+    // productCode and displayName required
+    const request = this.pick(product, 'productCode', 'displayName', 'description', 'productCategory', 'externalOrg', 'externalKey')
+    const r = await this.client.post(`/orgs/${orgId}/products`, request, opts)
+    return r && r.body
+  }
+
+  async createExternalBatch (batch, opts) {
+    opts = opts || {}
+    const orgId = batch.orgId || opts.orgId || await this.client.getOrgId()
+    // externalOrg required
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'products', 'externalOrg')
+    const r = await this.client.post(`/orgs/${orgId}/product-external-batches`, request, opts)
+    return r && r.body
+  }
 }
 
 module.exports = ProductsApi
