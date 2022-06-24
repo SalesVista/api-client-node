@@ -171,7 +171,8 @@ class SVClient {
         'User-Agent': this.userAgent,
         ...this.defaultHeaders,
         ...opts.headers
-      }
+      },
+      ...opts.gotOpts
     }
 
     if (data && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(String(gotOpts.method).toUpperCase())) {
