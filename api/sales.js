@@ -67,6 +67,7 @@ class SalesApi extends Api {
       'referenceId', // string
       'noteLike', // string (multiple values requires multiple params)
       'source', // string or array
+      'externalKey', // string or array
       'externalKeyLike', // string or array
       'withWarnings', // boolean
       'status', // string or array
