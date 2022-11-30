@@ -84,7 +84,7 @@ class TriggerEventsApi extends Api {
   async createTriggerEvent (event, opts) {
     opts = opts || {}
     const orgId = event.orgId || opts.orgId || await this.client.getOrgId()
-    const request = this.pick(event, 'entityId', { entityType: 'sale' }, 'triggerEventType', 'effectiveDate')
+    const request = this.pick(event, 'entityId', { entityType: 'sale' }, 'triggerEventType', 'effectiveDate', 'percentage')
     const r = await this.client.post(`/orgs/${orgId}/trigger-events`, request, opts)
     return r && r.body
   }
