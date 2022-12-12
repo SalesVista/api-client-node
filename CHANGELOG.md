@@ -1,6 +1,15 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [0.8.0](https://github.com/SalesVista/api-client-node/compare/v0.7.0...v0.8.0) (2022-12-12)
+
+
+### Features
+
+* add createProduct and createExternalBatch to products api module ([#17](https://github.com/SalesVista/api-client-node/issues/17)) ([8330ec9](https://github.com/SalesVista/api-client-node/commit/8330ec947e6a1eb953ef47fb9fed084d2fd184ce))
+* support externalKey param for sales.listSales ([#18](https://github.com/SalesVista/api-client-node/issues/18)) ([50d94f6](https://github.com/SalesVista/api-client-node/commit/50d94f6109fdab42840c63e5dc52605cb42930d8))
+* support gotOpts in client fetch ([#16](https://github.com/SalesVista/api-client-node/issues/16)) ([5e3bf9f](https://github.com/SalesVista/api-client-node/commit/5e3bf9f77cd49e3f2dd92699571c0b9b12063f56))
 
 ## [0.7.0](https://github.com/SalesVista/api-client-node/compare/v0.6.0...v0.7.0) (2022-03-23)
 
