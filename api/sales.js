@@ -92,7 +92,17 @@ class SalesApi extends Api {
     params = params || {}
     opts = opts || {}
     const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
-    const url = `/orgs/${orgId}/sale-batches` + this.qs(params, 'page', 'size', 'deleted', 'name')
+    const url = `/orgs/${orgId}/sale-batches` + this.qs(
+      params,
+      { page: 1 },
+      { size: 50 },
+      'deleted', // boolean
+      'name', // string or array
+      'includeAggregates', // boolean
+      'id', // string or array
+      'appId', // string or array
+      'source' // string or array ('file' and 'integration' are treated as enums)
+    )
     const r = await this.client.get(url, opts)
     return r && r.body
   }
