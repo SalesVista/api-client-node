@@ -56,6 +56,10 @@ class SalesApi extends Api {
       'id', // string or array
       'productId', // string or array
       'customerId', // string or array
+      'from', // string representing date e.g. '2023-01-01', applies to effectiveDate
+      'to', // string representing date e.g. '2023-01-31', applies to effectiveDate
+      'fiscalYearId', // string, applies to effectiveDate
+      'fiscalPeriodId', // string, applies to effectiveDate, may be id or one of 'current', 'previous', 'next'
       'effectiveDate', // string or array
       'effectiveDateAfter', // string like '2022-02-12'
       'effectiveDateBefore', // string
@@ -66,12 +70,34 @@ class SalesApi extends Api {
       'batchId', // string or array
       'referenceId', // string
       'noteLike', // string (multiple values requires multiple params)
+      'transactionNum', // integer or array
+      'transactionNumLike', // partial-integer string or array
       'source', // string or array
       'externalKey', // string or array
       'externalKeyLike', // string or array
+      'deferredAccrual', // boolean
       'withWarnings', // boolean
       'status', // string or array
-      'type' // string or array
+      'type' // string or array, values like 'txn', 'event', 'churn'
+    )
+    // TODO check params for possible custom field property names and apply to qs
+    const r = await this.client.get(route, opts)
+    return r && r.body
+  }
+
+  async getSaleTotals (params, opts) {
+    params = params || {}
+    opts = opts || {}
+    const orgId = params.orgId || opts.orgId || await this.client.getOrgId()
+    const route = `/orgs/${orgId}/sale-totals` + this.qs(
+      params,
+      'from', // string representing date e.g. '2023-01-01', applies to effectiveDate
+      'to', // string representing date e.g. '2023-01-31', applies to effectiveDate
+      'fiscalYearId', // string, applies to effectiveDate
+      'fiscalPeriodId', // string, applies to effectiveDate, may be id or one of 'current', 'previous', 'next'
+      'type', // string or array, values like 'txn', 'event', 'churn'
+      'includeBreakdown', // boolean
+      'breakdownIntervals' // integer
     )
     const r = await this.client.get(route, opts)
     return r && r.body
