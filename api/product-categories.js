@@ -51,6 +51,15 @@ class ProductCategoriesApi extends Api {
     const r = await this.client.get(route, opts)
     return r && r.body
   }
+
+  async createProductCategory (pcat, opts) {
+    opts = opts || {}
+    const orgId = pcat.orgId || opts.orgId || await this.client.getOrgId()
+    // name is required
+    const request = this.pick(pcat, 'name', 'description', 'parent')
+    const r = await this.client.post(`/orgs/${orgId}/product-categories`, request, opts)
+    return r && r.body
+  }
 }
 
 module.exports = ProductCategoriesApi
