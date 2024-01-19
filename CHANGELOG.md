@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.9.1](https://github.com/SalesVista/api-client-node/compare/v0.9.0...v0.9.1) (2024-01-19)
+
+
+### Features
+
+* add ability to create product categories ([#22](https://github.com/SalesVista/api-client-node/issues/22)) ([bb742e5](https://github.com/SalesVista/api-client-node/commit/bb742e5f9b6fdd6fd523336e13e962c7f634d78e))
+
 ## [0.9.0](https://github.com/SalesVista/api-client-node/compare/v0.8.0...v0.9.0) (2023-02-22)
 
 
