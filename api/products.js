@@ -66,6 +66,13 @@ class ProductsApi extends Api {
     return r && r.body
   }
 
+  async updateProduct (product, opts) {
+    opts = opts || {}
+    const request = this.pick(product, 'id', 'name', 'slug', 'version', 'productCategory')
+    const r = await this.client.put(`/products/${request.id}`, request, opts)
+    return r && r.body
+  }
+
   async createExternalBatch (batch, opts) {
     opts = opts || {}
     const orgId = batch.orgId || opts.orgId || await this.client.getOrgId()

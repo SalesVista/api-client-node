@@ -66,6 +66,13 @@ class CustomersApi extends Api {
     return r && r.body
   }
 
+  async updateCustomer (customer, opts) {
+    opts = opts || {}
+    const request = this.pick(customer, 'id', 'name', 'slug', 'description', 'version', 'customerCategory')
+    const r = await this.client.put(`/customers/${request.id}`, request, opts)
+    return r && r.body
+  }
+
   async createExternalBatch (batch, opts) {
     opts = opts || {}
     const orgId = batch.orgId || opts.orgId || await this.client.getOrgId()
