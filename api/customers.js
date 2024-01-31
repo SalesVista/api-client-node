@@ -66,9 +66,9 @@ class CustomersApi extends Api {
     return r && r.body
   }
 
-  async updateCustomer (customer) {
+  async updateCustomer (customer, opts) {
     const request = this.pick(customer, 'id', 'name', 'slug', 'description', 'version', 'externalOrg', 'externalKey', 'customerCategory')
-    const r = await this.client.put(`/customers/${request.id}`, request)
+    const r = await this.client.put(`/customers/${request.id}`, request, opts)
     return r && r.body
   }
 
