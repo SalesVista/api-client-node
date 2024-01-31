@@ -67,9 +67,8 @@ class ProductsApi extends Api {
   }
 
   async updateProduct (product, opts) {
-    opts = opts || {}
-    const request = this.pick(product, 'id', 'name', 'slug', 'version', 'productCategory')
-    const r = await this.client.put(`/products/${request.id}`, request, opts)
+    const request = this.pick(product, 'id', 'productCode', 'displayName', 'description', 'version', 'externalOrg', 'externalKey', 'productCategory')
+    const r = await this.client.put(`/products/${request.id}`, request)
     return r && r.body
   }
 
