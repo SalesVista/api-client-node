@@ -68,6 +68,7 @@ class SVClient {
     this._cacheStrategy = opts.cacheStrategy || this._cacheStrategy
 
     // api modules
+    this._bgpEvents = opts.bgpEvents || this._bgpEvents
     this._customerCategories = opts.customerCategories || this._customerCategories
     this._customers = opts.customers || this._customers
     this._customFields = opts.customFields || this._customFields
@@ -263,6 +264,11 @@ class SVClient {
     const token = await this.getToken(true)
     if (token && token.org_id) this.orgId = token.org_id
     return this.orgId
+  }
+
+  get bgpEvents () {
+    if (!this._bgpEvents) this._bgpEvents = require('./api/bgp-events').get({ client: this })
+    return this._bgpEvents
   }
 
   get customerCategories () {
