@@ -161,7 +161,7 @@ class SalesApi extends Api {
     opts = opts || {}
     const orgId = opts.orgId || await this.client.getOrgId()
     // externalOrg required
-    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'sales', 'externalOrg')
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'sales', 'externalOrg', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/sale-external-batches`, request, opts)
     return r && r.body
   }
@@ -170,23 +170,15 @@ class SalesApi extends Api {
     opts = opts || {}
     const orgId = opts.orgId || await this.client.getOrgId()
     // rawName required
-    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'sales')
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'sales', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/sale-file-batches`, request, opts)
     return r && r.body
   }
 
   async updateBatch (batchId, version, opts) {
-    const {
-      name,
-      sales // verify it is an array?
-    } = opts
-
-    const request = {
-      version,
-      name
-    }
-
-    if (sales) request.sales = sales
+    opts = opts || {}
+    const request = this.pick(opts, 'name', 'sales', 'svExecId')
+    request.version = version
 
     const route = `/sale-batches/${batchId}`
     const r = await this.client.put(route, request, opts)

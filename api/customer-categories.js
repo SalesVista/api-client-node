@@ -41,7 +41,7 @@ class CustomerCategoriesApi extends Api {
     opts = opts || {}
     const orgId = ccat.orgId || opts.orgId || await this.client.getOrgId()
     // name is required
-    const request = this.pick(ccat, 'name', 'description', 'parent')
+    const request = this.pick(ccat, 'name', 'description', 'parent', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/customer-categories`, request, opts)
     return r && r.body
   }

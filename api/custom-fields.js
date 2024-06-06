@@ -55,7 +55,7 @@ class CustomFieldsApi extends Api {
   async createOption (customFieldId, option, opts) {
     opts = opts || {}
     // name is required
-    const request = this.pick(option, 'name')
+    const request = this.pick(option, 'name', 'svExecId')
     const r = await this.client.post(`/custom-fields/${customFieldId}/options`, request, opts)
     return r && r.body
   }
