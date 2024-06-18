@@ -61,13 +61,13 @@ class ProductsApi extends Api {
     opts = opts || {}
     const orgId = product.orgId || opts.orgId || await this.client.getOrgId()
     // productCode and displayName required
-    const request = this.pick(product, 'productCode', 'displayName', 'description', 'productCategory', 'externalOrg', 'externalKey')
+    const request = this.pick(product, 'productCode', 'displayName', 'description', 'productCategory', 'externalOrg', 'externalKey', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/products`, request, opts)
     return r && r.body
   }
 
   async updateProduct (product, opts) {
-    const request = this.pick(product, 'id', 'productCode', 'displayName', 'description', 'version', 'externalOrg', 'externalKey', 'productCategory')
+    const request = this.pick(product, 'id', 'productCode', 'displayName', 'description', 'version', 'externalOrg', 'externalKey', 'productCategory', 'svExecId')
     const r = await this.client.put(`/products/${request.id}`, request, opts)
     return r && r.body
   }
@@ -76,7 +76,7 @@ class ProductsApi extends Api {
     opts = opts || {}
     const orgId = batch.orgId || opts.orgId || await this.client.getOrgId()
     // externalOrg required
-    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'products', 'externalOrg')
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'products', 'externalOrg', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/product-external-batches`, request, opts)
     return r && r.body
   }

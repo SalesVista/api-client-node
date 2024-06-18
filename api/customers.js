@@ -61,13 +61,13 @@ class CustomersApi extends Api {
     opts = opts || {}
     const orgId = customer.orgId || opts.orgId || await this.client.getOrgId()
     // name (Name) and slug (Customer Code) required
-    const request = this.pick(customer, 'name', 'slug', 'customerCategory', 'description', 'externalOrg', 'externalKey')
+    const request = this.pick(customer, 'name', 'slug', 'customerCategory', 'description', 'externalOrg', 'externalKey', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/customers`, request, opts)
     return r && r.body
   }
 
   async updateCustomer (customer, opts) {
-    const request = this.pick(customer, 'id', 'name', 'slug', 'description', 'version', 'externalOrg', 'externalKey', 'customerCategory')
+    const request = this.pick(customer, 'id', 'name', 'slug', 'description', 'version', 'externalOrg', 'externalKey', 'customerCategory', 'svExecId')
     const r = await this.client.put(`/customers/${request.id}`, request, opts)
     return r && r.body
   }
@@ -76,7 +76,7 @@ class CustomersApi extends Api {
     opts = opts || {}
     const orgId = batch.orgId || opts.orgId || await this.client.getOrgId()
     // externalOrg required
-    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'customers', 'externalOrg')
+    const request = this.pick(batch, 'name', 'rawName', 'rawNumBytes', 'rawNumRows', 'rawFormat', 'customers', 'externalOrg', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/customer-external-batches`, request, opts)
     return r && r.body
   }

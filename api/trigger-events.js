@@ -47,13 +47,13 @@ class TriggerEventsApi extends Api {
   async createTriggerEventType (eventType, opts) {
     opts = opts || {}
     const orgId = eventType.orgId || opts.orgId || await this.client.getOrgId()
-    const request = this.pick(eventType, { entityType: 'sale' }, 'name', 'description')
+    const request = this.pick(eventType, { entityType: 'sale' }, 'name', 'description', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/trigger-event-types`, request, opts)
     return r && r.body
   }
 
   async updateTriggerEventType (eventType, opts) {
-    const request = this.pick(eventType, 'version', 'name', 'entityType', 'description')
+    const request = this.pick(eventType, 'version', 'name', 'entityType', 'description', 'svExecId')
     const r = await this.client.put(`/trigger-event-types/${eventType?.id}`, request, opts)
     return r && r.body
   }
@@ -84,7 +84,7 @@ class TriggerEventsApi extends Api {
   async createTriggerEvent (event, opts) {
     opts = opts || {}
     const orgId = event.orgId || opts.orgId || await this.client.getOrgId()
-    const request = this.pick(event, 'entityId', { entityType: 'sale' }, 'triggerEventType', 'effectiveDate', 'percentage')
+    const request = this.pick(event, 'entityId', { entityType: 'sale' }, 'triggerEventType', 'effectiveDate', 'percentage', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/trigger-events`, request, opts)
     return r && r.body
   }

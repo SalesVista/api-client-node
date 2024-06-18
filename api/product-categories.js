@@ -56,7 +56,7 @@ class ProductCategoriesApi extends Api {
     opts = opts || {}
     const orgId = pcat.orgId || opts.orgId || await this.client.getOrgId()
     // name is required
-    const request = this.pick(pcat, 'name', 'parent')
+    const request = this.pick(pcat, 'name', 'parent', 'svExecId')
     const r = await this.client.post(`/orgs/${orgId}/product-categories`, request, opts)
     return r && r.body
   }
