@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [0.9.3](https://github.com/SalesVista/api-client-node/compare/v0.9.2...v0.9.3) (2024-06-18)
+
+
+### Features
+
+* add support for background process events via new bgpEvents module and svExecId ([#24](https://github.com/SalesVista/api-client-node/issues/24)) ([39fea79](https://github.com/SalesVista/api-client-node/commit/39fea7946b82d28201eb7e56843ca8dd2d434c19))
+
 ## [0.9.2](https://github.com/SalesVista/api-client-node/compare/v0.9.1...v0.9.2) (2024-01-31)
 
 
